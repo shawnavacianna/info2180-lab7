@@ -1,21 +1,25 @@
-// JavaScript File
 $(document).ready(function()
 {
-    var searchButton = $("#search");
-    var url = "https://info2180-lab7-shawnavacianna.c9users.io/world.php?country=";
+    $("#lookup").on('click', function(){
+        if($("#check").is(":checked")){
+            searchAll();
+        }
+        else if ($("#country").val() != ""){
+            querySearch($("#country").val());
+        }
+    });
+});
     
     
-    searchButton.on('click', queryJamaica);
-    
-    
-    function queryJamaica(event)
+    function querySearch(event)
     {
-        event.preventDefault();
+        var url = 'https://info2180-lab7-shawnavacianna.c9users.io/world.php?country='+ event;
+        //event.preventDefault();
         
-        var termEntered = $("#country").val();
+        //var termEntered = $("#country").val();
         
         $.ajax({
-          url: url + termEntered,
+          url: url + event,
         })
         .done(function(data) 
         {
@@ -29,5 +33,15 @@ $(document).ready(function()
         
     }
     
-    
-});
+   
+    function searchAll(){
+     var link = 'https://info2180-lab7-shawnavacianna.c9users.io/world.php?all=true';
+     
+     $.ajax(link,{
+         method: 'GET',
+     }).done(function(res){
+         $("#result").html(res);
+     }).fail(function(fail){
+         $("#result").html('<b> FAIL 500 - AJAX ERROR!</b>');
+     });
+    }
